@@ -130,9 +130,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void findTheAddress(LatLng latLng) {
         Geocoder geocoder = new Geocoder(this);
-        geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+        try {
+            Address address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0);
+//
+            int length = address.getMaxAddressLineIndex() + 1; //how many address lines are there?
+//
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < length; i++) {
+                String addressLine = address.getAddressLine(i);
+                builder.append(addressLine);
+            }
 
+            Toast.makeText(this, builder.toString(), Toast.LENGTH_SHORT).show();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 
